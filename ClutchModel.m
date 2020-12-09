@@ -1,4 +1,21 @@
 %% Building a Clutch Lock-Up Model
+%
+% This example shows how to use Simulink(R) to model and simulate a
+% rotating clutch system. Although modeling a clutch system is difficult
+% because of topological changes in the system dynamics during lockup, this
+% example shows how Simulink's enabled subsystems easily handle
+% such problems. We illustrate how to employ important Simulink modeling
+% concepts in the creation of the clutch simulation. Designers can apply
+% these concepts to many models with strong discontinuities and constraints
+% that may change dynamically. 
+%
+% In the example, you use enabled subsystems to build the clutch model. Two
+% enabled subsystems model the clutch dynamics in either the locked or
+% unlocked position. After running the simulation, a GUI opens. Checking
+% any of the boxes on the GUI produces a plot of any of the selected
+% variables (versus time).
+ 
+% Copyright 1984-2015 The MathWorks, Inc.
 
 %% Analysis and Physics
 %
@@ -167,8 +184,8 @@
 % page by selecting the code and pressing F9. You can also Select Code >
 % Right Click > Select "Evaluate Selection".
 
-open_system('Clutch'); % code does not appear in the example HTML
-evalc('sim(''Clutch'')'); %simulate and don't display output
+open_system('sldemo_clutch'); % code does not appear in the example HTML
+evalc('sim(''sldemo_clutch'')'); %simulate and don't display output
 
 %%
 % *Figure 3:* Top level diagram for the clutch model 
@@ -189,7 +206,7 @@ evalc('sim(''Clutch'')'); %simulate and don't display output
 % states and the subsystem inputs of engine torque, |Tin|, and clutch capacity,
 % |Tfmaxk|.
 
-open_system('Clutch/Unlocked');
+open_system('sldemo_clutch/Unlocked');
 
 %%
 % *Figure 4:* The 'Unlocked' subsystem
@@ -242,7 +259,7 @@ open_system('Clutch/Unlocked');
 % subsystem is active at all times. Whenever the control changes, the
 % states are neatly handed off between the two.
 
-open_system('Clutch/Locked');
+open_system('sldemo_clutch/Locked');
 
 %%
 % *Figure 5:* The 'Locked' Subsystem
@@ -258,7 +275,7 @@ open_system('Clutch/Locked');
 % Open the 'Friction Mode Logic' subsystem by double clicking on it in the
 % model window. 
 
-open_system('Clutch/Friction Mode Logic');
+open_system('sldemo_clutch/Friction Mode Logic');
 
 %%
 % *Figure 6:* The 'Friction Mode Logic' Subsystem
@@ -281,10 +298,10 @@ open_system('Clutch/Friction Mode Logic');
 % corresponding boxes on the 'Clutch Demo Signals' GUI.
 %
 
-plot(Clutch_output.get('Tin').Values.Time, ...
-     Clutch_output.get('Tin').Values.Data, 'b', ...
-     Clutch_output.get('Fn').Values.Time,  ...
-     Clutch_output.get('Fn').Values.Data,  'r'  );
+plot(sldemo_clutch_output.get('Tin').Values.Time, ...
+     sldemo_clutch_output.get('Tin').Values.Data, 'b', ...
+     sldemo_clutch_output.get('Fn').Values.Time,  ...
+     sldemo_clutch_output.get('Fn').Values.Data,  'r'  );
 xlabel('Time (sec)');
 ylabel('System Inputs');
 legend('Engine Torque (Nm)', 'Clutch Normal Force (N)');
@@ -326,12 +343,12 @@ axis([0 10 -.2 2.2]);
 % occurs at about |t = 6.25 sec| as indicated by the separation of the
 % engine and vehicle speeds.  
 
-plot(Clutch_output.get('EngineSpeed').Values.Time, ...
-     Clutch_output.get('EngineSpeed').Values.Data,  'r', ...
-     Clutch_output.get('VehicleSpeed').Values.Time, ...
-     Clutch_output.get('VehicleSpeed').Values.Data, 'b', ...
-     Clutch_output.get('ShaftSpeed').Values.Time, ...
-     Clutch_output.get('ShaftSpeed').Values.Data,   'g'  );
+plot(sldemo_clutch_output.get('EngineSpeed').Values.Time, ...
+     sldemo_clutch_output.get('EngineSpeed').Values.Data,  'r', ...
+     sldemo_clutch_output.get('VehicleSpeed').Values.Time, ...
+     sldemo_clutch_output.get('VehicleSpeed').Values.Data, 'b', ...
+     sldemo_clutch_output.get('ShaftSpeed').Values.Time, ...
+     sldemo_clutch_output.get('ShaftSpeed').Values.Data,   'g'  );
 xlabel('Time (sec)');
 ylabel('Angular Speed (rad/sec)');
 legend('\omega_e - Engine Speed', '\omega_v - Vehicle Speed', '\omega - Shaft Speed');
@@ -352,8 +369,8 @@ title('Angular Velocities for Default Inputs');
 %
 % Close the model. Clear generated data.
 
-close_system('Clutch',0);
-clear Clutch_output;
+close_system('sldemo_clutch',0);
+clear sldemo_clutch_output;
 
 
 %% Conclusions

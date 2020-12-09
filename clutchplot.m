@@ -1,10 +1,14 @@
-function ClutchPlot(Action)
-%   CLUTCHPLOT plot clutch time histories.
-%   CLUTCHPLOT plots the input and output time histories of the clutch
+function clutchplot(Action)
+%   SLDEMO_CLUTCHPLOT plot clutch time histories.
+%   SLDEMO_CLUTCHPLOT plots the input and output time histories of the clutch
 %   model.  
 %
 %   This function uses the model callbacks PreLoadFcn, PostLoadFcn, StartFcn,
 %   StopFcn and CloseFcn.  It also makes use of the find_system command.
+
+%   Loren Dean
+%   Edited: Gheorghe Chistol, August 2006
+%   Copyright 1990-2015 The MathWorks, Inc.
 
 FigHandle=findobj(allchild(0),'flat','Tag','OverlayFigure');
 FigPlotHandle=findobj(allchild(0),'flat','Tag','OverlayPlotFigure');
@@ -83,8 +87,8 @@ CheckList = Value;
 Value=find([Value{:}]);
 
 % Check to see that the simulation was run and data was generated
-% clutch_output is the logged data structure in MATLAB workspace
-Vars=evalin('base','whos(''Clutch_output'')');
+% sldemo_clutch_output is the logged data structure in MATLAB workspace
+Vars=evalin('base','whos(''sldemo_clutch_output'')');
 
 FigPlotOpen=~isempty(FigPlotHandle);
 
@@ -139,8 +143,8 @@ if ~isempty(Vars) && ~isempty(Value),
       end % switch
 
       % Need to extract data from data structure sldemo_clutch_output
-      y_data=evalin('base',['Clutch_output.get(''', PlotMe ''')', '.Values.Data']);        
-      x_data=evalin('base',['Clutch_output.get(''', PlotMe ''')', '.Values.Time']);        
+      y_data=evalin('base',['sldemo_clutch_output.get(''', PlotMe ''')', '.Values.Data']);        
+      x_data=evalin('base',['sldemo_clutch_output.get(''', PlotMe ''')', '.Values.Time']);        
 
       plot(x_data,y_data, ...
           'LineStyle',LineStyleOrder{LineIndex}, ...
@@ -208,13 +212,13 @@ function LocalInitFig(FigHandle)
 FigOpen=~isempty(FigHandle);
 
 % If sldemo_clutch is simulated from the command line, don't open figures.
-if ~isempty(find_system(0,'flat','name','Clutch')) && ...
-   strcmp(get_param('Clutch','Open'),'off'),
+if ~isempty(find_system(0,'flat','name','sldemo_clutch')) && ...
+   strcmp(get_param('sldemo_clutch','Open'),'off'),
   return
 end
 
 % If sldemo_clutch is not open, open it
-if isempty(find_system(0,'flat','name','Clutch')),
+if isempty(find_system(0,'flat','name','sldemo_clutch')),
   sldemo_clutch
 end  
 
@@ -226,7 +230,7 @@ end % if FigOpen
 
 ReturnChar=sprintf('\n');      
 %%% Get Input and Output name info.    
-Name=find_system('Clutch','SearchDepth',1,'BlockType','Outport');
+Name=find_system('sldemo_clutch','SearchDepth',1,'BlockType','Outport');
 
 PortNumber = zeros(length(Name),1);
 OutputName = cell(length(Name),1);
@@ -245,7 +249,7 @@ OutputHandles=OutputHandles(SortIndex);
 OutputName=[{'Outputs'};OutputName];
 
 
-TempInputName=find_system('Clutch'     , ...
+TempInputName=find_system('sldemo_clutch'     , ...
                           'SearchDepth',1, ...
                           'BlockType'  ,'FromWorkspace');
            
@@ -287,13 +291,13 @@ ScreenUnits=get(0,'Units');
 set(0,'Units','pixels');
 ScreenPos=get(0,'ScreenSize');
 set(0,'Units',ScreenUnits);    
-ModelPos=get_param('Clutch','Location');
+ModelPos=get_param('sldemo_clutch','Location');
 
 FigX=0;FigY=0;
 %%% Create Everything %%%    
 Fig=figure('Units'          ,'points'                                , ...
            'Position'       ,[FigX FigY FigWidth FigHeight]          , ...
-           'CloseRequestFcn','ClutchPlot Close'                      , ...
+           'CloseRequestFcn','sldemo_clutchplot Close'                      , ...
            'Menubar'        ,'none'                                  , ...
            'Colormap'       ,[]                                      , ...
            'NumberTitle'    ,'off'                                   , ...
@@ -335,7 +339,7 @@ for lp=1:length(Names),
                    'Position',BtnPos(lp,:)     , ...
                    'Units'   ,'normalized'     , ...               
                    'String'  ,Names{lp}        , ...
-                   'Callback','ClutchPlot Plot', ...                       
+                   'Callback','sldemo_clutchplot Plot', ...                       
                    'Tag'     ,Names{lp}          ...
                    );
 end % for lp
@@ -350,5 +354,3 @@ Data.Names=Names;
 Data.NumInputs=length(InputName)-1;      
 
 set(Fig,'UserData',Data,'HandleVisibility','callback','Visible','on');
-
-
