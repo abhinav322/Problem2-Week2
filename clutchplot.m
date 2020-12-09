@@ -88,7 +88,7 @@ Value=find([Value{:}]);
 
 % Check to see that the simulation was run and data was generated
 % sldemo_clutch_output is the logged data structure in MATLAB workspace
-Vars=evalin('base','whos(''sldemo_clutch_output'')');
+Vars=evalin('base','whos(''clutch_output'')');
 
 FigPlotOpen=~isempty(FigPlotHandle);
 
@@ -143,8 +143,8 @@ if ~isempty(Vars) && ~isempty(Value),
       end % switch
 
       % Need to extract data from data structure sldemo_clutch_output
-      y_data=evalin('base',['sldemo_clutch_output.get(''', PlotMe ''')', '.Values.Data']);        
-      x_data=evalin('base',['sldemo_clutch_output.get(''', PlotMe ''')', '.Values.Time']);        
+      y_data=evalin('base',['clutch_output.get(''', PlotMe ''')', '.Values.Data']);        
+      x_data=evalin('base',['clutch_output.get(''', PlotMe ''')', '.Values.Time']);        
 
       plot(x_data,y_data, ...
           'LineStyle',LineStyleOrder{LineIndex}, ...
@@ -212,13 +212,13 @@ function LocalInitFig(FigHandle)
 FigOpen=~isempty(FigHandle);
 
 % If sldemo_clutch is simulated from the command line, don't open figures.
-if ~isempty(find_system(0,'flat','name','sldemo_clutch')) && ...
-   strcmp(get_param('sldemo_clutch','Open'),'off'),
+if ~isempty(find_system(0,'flat','name','clutch')) && ...
+   strcmp(get_param('clutch','Open'),'off'),
   return
 end
 
 % If sldemo_clutch is not open, open it
-if isempty(find_system(0,'flat','name','sldemo_clutch')),
+if isempty(find_system(0,'flat','name','clutch')),
   sldemo_clutch
 end  
 
@@ -230,7 +230,7 @@ end % if FigOpen
 
 ReturnChar=sprintf('\n');      
 %%% Get Input and Output name info.    
-Name=find_system('sldemo_clutch','SearchDepth',1,'BlockType','Outport');
+Name=find_system('clutch','SearchDepth',1,'BlockType','Outport');
 
 PortNumber = zeros(length(Name),1);
 OutputName = cell(length(Name),1);
@@ -249,7 +249,7 @@ OutputHandles=OutputHandles(SortIndex);
 OutputName=[{'Outputs'};OutputName];
 
 
-TempInputName=find_system('sldemo_clutch'     , ...
+TempInputName=find_system('clutch'     , ...
                           'SearchDepth',1, ...
                           'BlockType'  ,'FromWorkspace');
            
@@ -291,13 +291,13 @@ ScreenUnits=get(0,'Units');
 set(0,'Units','pixels');
 ScreenPos=get(0,'ScreenSize');
 set(0,'Units',ScreenUnits);    
-ModelPos=get_param('sldemo_clutch','Location');
+ModelPos=get_param('clutch','Location');
 
 FigX=0;FigY=0;
 %%% Create Everything %%%    
 Fig=figure('Units'          ,'points'                                , ...
            'Position'       ,[FigX FigY FigWidth FigHeight]          , ...
-           'CloseRequestFcn','sldemo_clutchplot Close'                      , ...
+           'CloseRequestFcn','clutchplot Close'                      , ...
            'Menubar'        ,'none'                                  , ...
            'Colormap'       ,[]                                      , ...
            'NumberTitle'    ,'off'                                   , ...
@@ -339,7 +339,7 @@ for lp=1:length(Names),
                    'Position',BtnPos(lp,:)     , ...
                    'Units'   ,'normalized'     , ...               
                    'String'  ,Names{lp}        , ...
-                   'Callback','sldemo_clutchplot Plot', ...                       
+                   'Callback','clutchplot Plot', ...                       
                    'Tag'     ,Names{lp}          ...
                    );
 end % for lp
