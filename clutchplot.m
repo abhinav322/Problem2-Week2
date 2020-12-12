@@ -1,20 +1,17 @@
 function clutchplot(Action)
-%   SLDEMO_CLUTCHPLOT plot clutch time histories.
-%   SLDEMO_CLUTCHPLOT plots the input and output time histories of the clutch
+%   CLUTCHPLOT plot clutch time histories.
+%   CLUTCHPLOT plots the input and output time histories of the clutch
 %   model.  
 %
 %   This function uses the model callbacks PreLoadFcn, PostLoadFcn, StartFcn,
 %   StopFcn and CloseFcn.  It also makes use of the find_system command.
 
-%   Loren Dean
-%   Edited: Gheorghe Chistol, August 2006
-%   Copyright 1990-2015 The MathWorks, Inc.
 
 FigHandle=findobj(allchild(0),'flat','Tag','OverlayFigure');
 FigPlotHandle=findobj(allchild(0),'flat','Tag','OverlayPlotFigure');
 
 if nargin,
-  % Get data from the "Clutch Demo Signals" figure  (figure with checkboxes)
+  % Get data from the "Clutch Signals" figure  (figure with checkboxes)
   Data=get(FigHandle,'UserData');
 
   % Find the Figure and check if it's open  
@@ -87,7 +84,7 @@ CheckList = Value;
 Value=find([Value{:}]);
 
 % Check to see that the simulation was run and data was generated
-% sldemo_clutch_output is the logged data structure in MATLAB workspace
+% clutch_output is the logged data structure in MATLAB workspace
 Vars=evalin('base','whos(''clutch_output'')');
 
 FigPlotOpen=~isempty(FigPlotHandle);
@@ -211,13 +208,13 @@ function LocalInitFig(FigHandle)
 
 FigOpen=~isempty(FigHandle);
 
-% If sldemo_clutch is simulated from the command line, don't open figures.
+% If clutch is simulated from the command line, don't open figures.
 if ~isempty(find_system(0,'flat','name','clutch')) && ...
    strcmp(get_param('clutch','Open'),'off'),
   return
 end
 
-% If sldemo_clutch is not open, open it
+% If clutch is not open, open it
 if isempty(find_system(0,'flat','name','clutch')),
   sldemo_clutch
 end  
